@@ -4,6 +4,7 @@ const port = process.env.PORT || 3000;
 
 // Initialize a counter to track the number of webhook calls
 let webhookCount = 0;
+let lastestMsg = '';
 
 // Middleware to parse incoming requests as JSON
 app.use(express.json());
@@ -12,7 +13,7 @@ app.use(express.json());
 app.post('/webhook', (req, res) => {
     // Increment the webhook counter
     webhookCount++;
-
+    lastestMsg = req.body;
     // Log the request body for debugging purposes
     console.log("Webhook received:", req.body);
 
@@ -26,6 +27,7 @@ app.post('/webhook', (req, res) => {
 // Route to get the current webhook count
 app.get('/webhook-count', (req, res) => {
     res.json({
+        body: lastestMsg,
         count: webhookCount
     });
 });
